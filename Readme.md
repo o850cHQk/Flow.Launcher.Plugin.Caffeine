@@ -6,7 +6,7 @@ This is a replacement for [Caffeine](https://www.zhornsoftware.co.uk/caffeine/) 
 Icons from [Lucide](https://lucide.dev/).  
 Thanks for that one guy on stackexchange that had a nice clean example of how power mangement works.
 
-![caffeine](./readme/caffdisplay.png)
+![caffeine](./images/readme/caffdisplay.png)
 
 ## Installation
 1. Extract release, place folder into %appdata%/FlowLauncher/Plugins folder and restart FlowLauncher.

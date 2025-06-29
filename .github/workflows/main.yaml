@@ -1,0 +1,38 @@
+name: Publish Release
+
+on:
+  push:
+    branches: [ master ]
+    paths-ignore: 
+      - .github/workflows/*
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 7.0.x
+      - name: get version
+        id: version
+        uses: notiz-dev/github-action-json-property@release
+        with: 
+          path: 'plugin.json'
+          prop_path: 'Version'
+      - run: echo ${{steps.version.outputs.prop}} 
+      - name: Build
+        run: |
+          dotnet publish 'Flow.Launcher.Plugin.Caffeine.csproj' -r win-x64  -c Release -o "Caffeine-${{steps.version.outputs.prop}}"
+          7z a -tzip "Caffeine-${{steps.version.outputs.prop}}.zip" "./Caffeine-${{steps.version.outputs.prop}}/*"
+          rm -r "Caffeine-${{steps.version.outputs.prop}}"
+      - name: Publish
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "Caffeine*"
+          tag_name: "v${{steps.version.outputs.prop}}"
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
