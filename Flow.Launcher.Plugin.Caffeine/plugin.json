@@ -1,0 +1,12 @@
+{
+    "ID": "212D62DEB5FF4835AB5AF4638E1B360B",
+    "ActionKeyword": "caf",
+    "Name": "Caffeine",
+    "Description": "Keep your computer awake",
+    "Author": "o850cHQk",
+    "Version": "1.0.0",
+    "Language": "csharp",
+    "Website": "https://github.com/o850cHQk/Flow.Launcher.Plugin.Caffeine",
+    "IcoPath": "Images\\icon.png",
+    "ExecuteFileName": "Flow.Launcher.Plugin.Caffeine.dll"
+}
