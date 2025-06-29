@@ -2,7 +2,7 @@ Caffiene for Flow Launcher
 ==================
 A plugin for [Flow launcher](https://github.com/Flow-Launcher/Flow.Launcher) that prevents your pc from sleeping or turning off the monitor.
 
-Icons from [Lucide](https://lucide.dev/).
+Icons from [Lucide](https://lucide.dev/).  
 Thanks for that one guy on stackexchange that had a nice clean example of how power mangement works.
 
 ![caffeine](./caffdisplay.png)
