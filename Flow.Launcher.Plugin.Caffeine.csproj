@@ -28,4 +28,10 @@
     <PackageReference Include="Flow.Launcher.Plugin" Version="4.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Images\icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
