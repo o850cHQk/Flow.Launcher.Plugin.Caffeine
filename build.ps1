@@ -1,2 +1,1 @@
-dotnet publish Flow.Launcher.Plugin.Caffeine -c Release -r win-x64
-Compress-Archive -LiteralPath Flow.Launcher.Plugin.UnCaffeineity3D/bin/Release/win-x64/publish -DestinationPath Flow.Launcher.Plugin.Caffeine/bin/Caffeine.zip -Force
+dotnet publish 'Flow.Launcher.Plugin.Caffeine.csproj' -r win-x64  -c Release
