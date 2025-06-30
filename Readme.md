@@ -9,7 +9,8 @@ Thanks for that one guy on stackexchange that had a nice clean example of how po
 ![caffeine](./images/readme/caffdisplay.png)
 
 ## Installation
-1. Extract release, place folder into %appdata%/FlowLauncher/Plugins folder and restart FlowLauncher.
+1. You can install from the plugin repo (hopefully soon)
+2. To install directly from the repo paste the following into Flow launcher `pm install https://github.com/o850cHQk/Flow.Launcher.Plugin.Caffeine/releases/download/v1.0.2/Caffeine-1.0.2.zip`
 
 ## Usage
     type in caf to toggle on and off.
