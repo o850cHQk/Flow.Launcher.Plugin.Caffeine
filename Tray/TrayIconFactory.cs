@@ -17,11 +17,15 @@ internal static class TrayIconFactory
     /// <param name="context">The plugin initialization context</param>
     /// <param name="onDurationSelected">Callback when a duration preset is clicked (null = indefinite)</param>
     /// <param name="onTurnOff">Callback when Turn Off is clicked</param>
+    /// <param name="getKeepDisplayOn">Func returning whether keep display on is currently enabled</param>
+    /// <param name="onToggleKeepDisplayOn">Callback when Keep screen active is toggled</param>
     /// <returns>The configured NotifyIcon and the status menu item for later updates</returns>
     public static (NotifyIcon notifyIcon, ToolStripMenuItem statusItem) CreateCaffeineIcon(
         PluginInitContext context,
         Action<TimeSpan?> onDurationSelected,
-        Action onTurnOff)
+        Action onTurnOff,
+        Func<bool> getKeepDisplayOn,
+        Action<bool> onToggleKeepDisplayOn)
     {
         var notifyIcon = new NotifyIcon();
         var contextMenu = new ContextMenuStrip();
@@ -33,6 +37,20 @@ internal static class TrayIconFactory
         // Status label (non-clickable, updated by TrayIconManager)
         var statusItem = new ToolStripMenuItem("Caffeine is active") { Enabled = false };
         contextMenu.Items.Add(statusItem);
+        contextMenu.Items.Add(new ToolStripSeparator());
+
+        // Keep screen active checkbox toggle
+        var keepDisplayItem = new ToolStripMenuItem("Keep screen active")
+        {
+            CheckOnClick = true,
+            Checked = getKeepDisplayOn()
+        };
+        keepDisplayItem.Click += (s, e) =>
+        {
+            var isChecked = keepDisplayItem.Checked;
+            Task.Run(() => onToggleKeepDisplayOn(isChecked));
+        };
+        contextMenu.Items.Add(keepDisplayItem);
         contextMenu.Items.Add(new ToolStripSeparator());
 
         // Duration presets — Task.Run prevents deadlock when callback hides the tray from the STA thread

@@ -26,7 +26,7 @@ When caffeine is already active, typing `caf` shows a "Turn off" option at the t
 
 ### Tray Icon
 
-Right-click the tray icon for quick access to duration presets and turn off. The remaining time is shown at the top of the menu and in the tooltip on hover.
+Right-click the tray icon for quick access to toggle keeping the screen active, choose duration presets, or turn off. The remaining time is shown at the top of the menu and in the tooltip on hover.
 
 ![caffeine tray](Images/readme/caff-tray.png)
 

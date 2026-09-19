@@ -232,7 +232,7 @@ public class Caffeine : IPlugin, ISettingProvider, IDisposable
 
         if (!IsActive)
         {
-            PowerUtilities.PreventPowerSave();
+            PowerUtilities.PreventPowerSave(_settings.KeepDisplayOn);
             IsActive = true;
 
             if (duration.HasValue)
@@ -243,7 +243,13 @@ public class Caffeine : IPlugin, ISettingProvider, IDisposable
             }
 
             if (_settings.ShowTrayIcon)
-                TrayIconManager.ShowTray(_context, OnDurationSelected, () => StopCaffeine(), GetStatusText);
+                TrayIconManager.ShowTray(
+                    _context,
+                    OnDurationSelected,
+                    () => StopCaffeine(),
+                    GetStatusText,
+                    () => _settings.KeepDisplayOn,
+                    OnToggleKeepDisplayOn);
             if (_settings.SendNotifications)
             {
                 var durationText = duration.HasValue ? $" for {FormatDurationLabel(duration.Value)}" : "";
@@ -313,13 +319,35 @@ public class Caffeine : IPlugin, ISettingProvider, IDisposable
         StartCaffeine(duration);
     }
 
+    private void OnToggleKeepDisplayOn(bool keepDisplayOn)
+    {
+        _settings.KeepDisplayOn = keepDisplayOn;
+        _context.API.SaveSettingJsonStorage<Settings.Settings>();
+        UpdatePowerSettings();
+    }
+
     /// <summary>
     /// Called by PluginSettings when the Show Tray Icon checkbox changes while caffeine is active.
     /// </summary>
     internal void ShowTrayIfActive()
     {
         if (IsActive && _settings.ShowTrayIcon)
-            TrayIconManager.ShowTray(_context, OnDurationSelected, () => StopCaffeine(), GetStatusText);
+            TrayIconManager.ShowTray(
+                _context,
+                OnDurationSelected,
+                () => StopCaffeine(),
+                GetStatusText,
+                () => _settings.KeepDisplayOn,
+                OnToggleKeepDisplayOn);
+    }
+
+    /// <summary>
+    /// Called by PluginSettings when power options change while caffeine is active.
+    /// </summary>
+    internal void UpdatePowerSettings()
+    {
+        if (IsActive)
+            PowerUtilities.PreventPowerSave(_settings.KeepDisplayOn);
     }
 
     /// <summary>

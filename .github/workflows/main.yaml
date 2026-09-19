@@ -2,26 +2,31 @@ name: Publish Release
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main, master ]
     paths-ignore: 
       - .github/workflows/*
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   publish:
     runs-on: windows-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 9.0.x
       - name: get version
         id: version
-        uses: notiz-dev/github-action-json-property@release
-        with: 
-          path: 'plugin.json'
-          prop_path: 'Version'
+        shell: pwsh
+        run: |
+          $ver = (Get-Content plugin.json | ConvertFrom-Json).Version
+          Add-Content -Path $env:GITHUB_OUTPUT -Value "prop=$ver"
       - run: echo ${{steps.version.outputs.prop}} 
       - name: Build
         run: |
@@ -29,10 +34,10 @@ jobs:
           7z a -tzip "Caffeine-${{steps.version.outputs.prop}}.zip" "./Caffeine-${{steps.version.outputs.prop}}/*"
           rm -r "Caffeine-${{steps.version.outputs.prop}}"
       - name: Publish
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: "Caffeine*"
           tag_name: "v${{steps.version.outputs.prop}}"
           generate_release_notes: true
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_POST }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_POST || secrets.GITHUB_TOKEN }}

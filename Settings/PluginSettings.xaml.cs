@@ -62,5 +62,6 @@ public partial class PluginSettings : UserControl
 
         if (_settings.ShowTrayIcon && Caffeine.IsActive) _caffeine.ShowTrayIfActive();
         if (!_settings.ShowTrayIcon) TrayIconManager.HideTray();
+        if (Caffeine.IsActive) _caffeine.UpdatePowerSettings();
     }
 }

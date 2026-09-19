@@ -21,4 +21,9 @@ public class Settings
     /// Whether to show tray icon when caffeine is active
     /// </summary>
     public bool ShowTrayIcon { get; set; } = true;
+
+    /// <summary>
+    /// Whether to keep the display turned on when caffeine is active
+    /// </summary>
+    public bool KeepDisplayOn { get; set; } = true;
 }

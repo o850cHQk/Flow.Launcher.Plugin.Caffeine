@@ -25,11 +25,15 @@ public static class TrayIconManager
     /// <param name="onDurationSelected">Callback when a duration preset is clicked</param>
     /// <param name="onTurnOff">Callback when Turn Off is clicked</param>
     /// <param name="getStatusText">Returns current status text (e.g. "1h 23m remaining" or "Indefinite")</param>
+    /// <param name="getKeepDisplayOn">Func returning whether keep display on is currently enabled</param>
+    /// <param name="onToggleKeepDisplayOn">Callback when Keep screen active is toggled</param>
     public static void ShowTray(
         PluginInitContext context,
         Action<TimeSpan?> onDurationSelected,
         Action onTurnOff,
-        Func<string> getStatusText)
+        Func<string> getStatusText,
+        Func<bool> getKeepDisplayOn,
+        Action<bool> onToggleKeepDisplayOn)
     {
         lock (_lock)
         {
@@ -39,7 +43,12 @@ public static class TrayIconManager
             _getStatusText = getStatusText;
             _threadManager = new TrayIconThreadManager();
 
-            var (notifyIcon, statusItem) = TrayIconFactory.CreateCaffeineIcon(context, onDurationSelected, onTurnOff);
+            var (notifyIcon, statusItem) = TrayIconFactory.CreateCaffeineIcon(
+                context,
+                onDurationSelected,
+                onTurnOff,
+                getKeepDisplayOn,
+                onToggleKeepDisplayOn);
             _notifyIcon = notifyIcon;
             _statusItem = statusItem;
 
